@@ -18,6 +18,11 @@ TESLA MHB8080A
 
 このソースコードは電脳伝説さんのmain.cを元に改変してGPLライセンスに基づいて公開するものです。
 
+## 8080の制御信号について
+8080を動作させるためには3種の電源電圧 +12V, +5V, -5Vと非対称の2相クロック、さらに制御信号を作成するシステムコントローラが必要です。  
+CPU 8080は専用のサポートICによって動作に必要な信号を生成しています。  
+本システムではφ2=0.5MHzのクロック周波数で動作します。専用のクロックジェネレータが出力するφ2とφ1は一定周期で変化するのですが、EMUZ80_8080では全体の処理速度を上げるためにφ1クロックを内部処理に合わせて変化させます。  
+
 ## メザニンボード
 https://github.com/satoshiokue/MEZ8080 
 
@@ -28,9 +33,6 @@ https://github.com/satoshiokue/MEZ8080/blob/main/MEZ8080.pdf
 
 EMUZ80で配布されているフォルダemuz80.X下のmain.cと置き換えて使用してください。
 * emuz80_8080.c
-
-## クロック周波数による注意
- 
 
 ## アドレスマップ
 ```
@@ -55,17 +57,20 @@ PIC18F47Q43 emu8080_Q43.hex
 PIC18F47Q83 emu8080_Q8x.hex  
 PIC18F47Q84 emu8080_Q8x.hex  
 
+## 8080プログラムにつて
+ROMにBASICとモニターを格納しています。  
+電源投入でUniversal Monitorが起動します。  
+モニターに追加したBコマンドによってINTEL8080 BASICが起動します。  
+BASICから”MONITOR”命令を実行するとUniversal Monitotがコールドスタートします。  
+
+INTEL8080 BASICは電脳伝説さんのSBC8080向けに整備されたデータパックに収蔵されたものにパッチを施しています。
+https://vintagechips.wordpress.com/2018/06/24/sbc8080-cpuルーズキット/  
+
+Universal Monitor  
+https://electrelic.com/electrelic/node/1317  
+
 ## 8080プログラムの格納
-インテルHEXデータを配列データ化して配列rom[]に格納すると0x0000に転送され8080で実行できます。
-
-## EMUBASICの変更点
-
-
-EMUZ80用のEMUBASICを次の様に変更しました。  
-
-RAMスタートアドレスを8000Hから2000Hに変更  
-通信入出力をメモリマップドI/OからI/O空間へ変更  
-Z180設定の追加（配列rom[]のコメント参照してください）  
+インテルHEXデータを配列データ化して配列rom[]に格納すると0x0000に転送され8080で実行できます。  
 
 ## 謝辞
 思い入れのあるCPUを動かすことのできるシンプルで美しいEMUZ80を開発された電脳伝説さんに感謝いたします。
@@ -79,9 +84,3 @@ EUMZ80はZ80CPUとPIC18F47Q43のDIP40ピンIC2つで構成されるシンプル�
 https://vintagechips.wordpress.com/2022/03/05/emuz80_reference  
 EMUZ80専用プリント基板 - オレンジピコショップ  
 https://store.shopping.yahoo.co.jp/orangepicoshop/pico-a-051.html  
-
-## 改訂
-Version 0.2 2023/4/20  
-起動時にFirmwareの対象基板(MEZZ180RAM)とクロック周波数を表示  
-初期化中にZ180の/RFSHと衝突していたGPIO RD6の設定を入力に変更
-## ファームウェア
