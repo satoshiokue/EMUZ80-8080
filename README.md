@@ -63,7 +63,23 @@ ROMにBASICとモニターを格納しています。
 電源投入でUniversal Monitorが起動します。  
 モニターに追加したBコマンドによってINTEL8080 BASICが起動します。  
 BASICから”MONITOR”命令を実行するとUniversal Monitotがコールドスタートします。  
+```
+MEZ8080 0.500MHz
 
+Universal Monitor 8080
+i8080
+] b
+
+INTEL8080 BASIC Ver 4.7b
+Copyright (C) 1978 by Microsoft
+3710 Bytes free
+Ok
+monitor
+
+Universal Monitor 8080
+i8080
+]
+```
 INTEL8080 BASICは電脳伝説さんのSBC8080向けに整備されたデータパックに収蔵されたものにパッチを施しています。
 https://vintagechips.wordpress.com/2018/06/24/sbc8080-cpuルーズキット/  
 
